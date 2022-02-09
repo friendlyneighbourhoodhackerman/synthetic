@@ -2,16 +2,26 @@ import sys
 import argparse
 from termcolor import colored
 from synthetic.consts import (CLI_NAME, ASCII_LOGO, DEFAULT_BINS,
-                              DEFAULT_SAMPLE_RATE, DEFAULT_MAX_DIST)
+                              DEFAULT_SAMPLE_RATE, DEFAULT_MAX_DIST, DEFAULT_SNAPSHOTS)
 from synthetic.commands.evo import Evolve
 from synthetic.commands.compare import Compare
 from synthetic.commands.const import Const
 from synthetic.commands.eval_distance import EvalDistance
 from synthetic.commands.fit import Fit
+from synthetic.commands.fit_dyn import Fit_Dyn #! Change to fit_dyn
 from synthetic.commands.gen import Gen
+from synthetic.commands.gen_chi import Gen_Chi
+from synthetic.commands.gen_dyn_chi import Gen_Dyn_Chi
+from synthetic.commands.gen_switch import Gen_Switch
 from synthetic.commands.prune import Prune
 from synthetic.commands.rand_gen import RandGen
+from synthetic.commands.gen_dyn import Gen_Dyn
+from synthetic.commands.evo_with_E_dyn import Evolve_Dyn
+from synthetic.commands.evo_init import Evolve_Init
+from synthetic.commands.compare_dyn import Compare_Dyn
 import time
+
+
 
 def create_command(name):
     if name == 'evo':
@@ -24,12 +34,29 @@ def create_command(name):
         return EvalDistance(CLI_NAME)
     elif name == 'fit':
         return Fit(CLI_NAME)
+    elif name == 'fit_dyn':
+        return Fit_Dyn(CLI_NAME)
     elif name == 'gen':
         return Gen(CLI_NAME)
     elif name == 'prune':
         return Prune(CLI_NAME)
     elif name == 'rand_gen':
         return RandGen(CLI_NAME)
+    elif name=="gen_dyn":    
+        return Gen_Dyn(CLI_NAME) 
+    elif name=="gen_chi":
+        return Gen_Chi(CLI_NAME)
+    elif name=="gen_dyn_chi":
+        return Gen_Dyn_Chi(CLI_NAME)
+    elif name=="gen_switch":
+        return Gen_Switch(CLI_NAME)
+    elif name=="evo_dyn":
+        return Evolve_Dyn(CLI_NAME)
+    elif name=="evo_init":
+        return Evolve_Init(CLI_NAME)
+    elif name=="compare_dyn":
+        return Compare_Dyn(CLI_NAME)
+    
     return None
 
 
@@ -67,17 +94,26 @@ def cli():
     parser.add_argument('--edges', type=int, help='number of edges')
     parser.add_argument('--mean', help='compute mean', action='store_true')
     parser.add_argument('--gentype', type=str, help='generator type')
-    parser.add_argument('--sr', type=float, help='stample rate',
+    parser.add_argument('--sr', type=float, help='sample rate',
                         default=DEFAULT_SAMPLE_RATE)
     parser.add_argument('--maxdist', type=int, help='maximum distance',
                         default=DEFAULT_MAX_DIST)
 
+    parser.add_argument('--snaps', type=int, help='number of snapshots of the network',
+                        default=DEFAULT_SNAPSHOTS)
+    parser.add_argument('--snaplist', type=float, help='list of edge snapshots of the network') #nargs='+', for multiple args
+    
+    
+    parser.add_argument('--mval', type=int, help='number of edges')
+    parser.add_argument('--switch', type=int, help='Position to switch to second generator')
+    
+    
     args = vars(parser.parse_args())
 
     show_logo()
 
-    command = create_command(args['command'])
-
+    command = create_command(args['command'])    
+    
     if command is None:
         print('unkown command: {}'.format(command))
         sys.exit(2)
@@ -89,6 +125,9 @@ def cli():
             print('error: {}'.format(command.error_msg))
             sys.exit(1)
     print("Time taken: {} minutes and {} seconds".format(int((time.time()-t0)//60),round((time.time()-t0)%60)))
+    
+import cProfile
 
 if __name__ == '__main__':
     cli()
+    
