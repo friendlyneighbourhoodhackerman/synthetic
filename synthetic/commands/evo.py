@@ -3,16 +3,13 @@ from synthetic.consts import (DEFAULT_GENERATIONS, DEFAULT_SAMPLE_RATE,
                               DEFAULT_TOLERANCE, DEFAULT_GEN_TYPE,
                               DEFAULT_NORM_SAMPLES)
 from synthetic.net import load_net
-#from synthetic.generator import create_generator
-from synthetic.generator_with_E import create_generator
+from synthetic.generator import create_generator
 from synthetic.distances import DistancesToNet, Norm
 from synthetic.evo import Evo
-#from synthetic.evo_reco import Evo
 from synthetic.commands.command import (Command, arg_with_default,
                                         get_stat_dist_types)
 
-from synthetic.profiler import profile
-import cProfile
+
 class Evolve(Command):
     def __init__(self, cli_name):
         Command.__init__(self, cli_name)
@@ -21,11 +18,8 @@ class Evolve(Command):
         self.mandatory_args = ['inet', 'odir']
         self.optional_args = ['undir', 'gens', 'sr', 'bins', 'maxdist',
                               'tolerance','gentype']
-    #@profile(output_file='test_evo_run.prof')
+
     def run(self, args):
-        pr = cProfile.Profile()
-        pr.enable()
-        
         self.error_msg = None
 
         netfile = args['inet']
@@ -40,8 +34,7 @@ class Evolve(Command):
 
         # load net
         net = load_net(netfile, directed)
-        
-        
+
         # create base generator
         base_generator = create_generator(directed, gen_type)
         if base_generator is None:
@@ -50,7 +43,6 @@ class Evolve(Command):
 
         # create fitness calculator
         # TODO: norm samples configurable
-        
         dists2net = DistancesToNet(net, get_stat_dist_types(args), bins,
                                    max_dist, norm=Norm.ER_MEAN_RATIO,
                                    norm_samples=DEFAULT_NORM_SAMPLES)
@@ -62,16 +54,12 @@ class Evolve(Command):
         # some reports to screen
         print('target net: {}'.format(netfile))
         print(evo.info_string())
-        
-        
+
         # write experiment params to file
         with open('{}/params.txt'.format(outdir), 'w') as text_file:
             text_file.write(evo.info_string())
 
         # run search
         evo.run()
-        
-        pr.disable()
-        pr.dump_stats('test_evo.prof')
 
         return True
