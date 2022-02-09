@@ -8,17 +8,17 @@ from synthetic.commands.compare import Compare
 from synthetic.commands.const import Const
 from synthetic.commands.eval_distance import EvalDistance
 from synthetic.commands.fit import Fit
-from synthetic.commands.fit_dyn import Fit_Dyn #! Change to fit_dyn
+#from synthetic.commands.fit_dyn import Fit_Dyn #! Change to fit_dyn
 from synthetic.commands.gen import Gen
-from synthetic.commands.gen_chi import Gen_Chi
-from synthetic.commands.gen_dyn_chi import Gen_Dyn_Chi
-from synthetic.commands.gen_switch import Gen_Switch
+#from synthetic.commands.gen_chi import Gen_Chi
+#from synthetic.commands.gen_dyn_chi import Gen_Dyn_Chi
+#from synthetic.commands.gen_switch import Gen_Switch
 from synthetic.commands.prune import Prune
 from synthetic.commands.rand_gen import RandGen
-from synthetic.commands.gen_dyn import Gen_Dyn
-from synthetic.commands.evo_with_E_dyn import Evolve_Dyn
-from synthetic.commands.evo_init import Evolve_Init
-from synthetic.commands.compare_dyn import Compare_Dyn
+#from synthetic.commands.gen_dyn import Gen_Dyn
+#from synthetic.commands.evo_with_E_dyn import Evolve_Dyn
+#from synthetic.commands.evo_init import Evolve_Init
+#from synthetic.commands.compare_dyn import Compare_Dyn
 import time
 
 
@@ -42,20 +42,20 @@ def create_command(name):
         return Prune(CLI_NAME)
     elif name == 'rand_gen':
         return RandGen(CLI_NAME)
-    elif name=="gen_dyn":    
-        return Gen_Dyn(CLI_NAME) 
-    elif name=="gen_chi":
-        return Gen_Chi(CLI_NAME)
-    elif name=="gen_dyn_chi":
-        return Gen_Dyn_Chi(CLI_NAME)
-    elif name=="gen_switch":
-        return Gen_Switch(CLI_NAME)
-    elif name=="evo_dyn":
-        return Evolve_Dyn(CLI_NAME)
-    elif name=="evo_init":
-        return Evolve_Init(CLI_NAME)
-    elif name=="compare_dyn":
-        return Compare_Dyn(CLI_NAME)
+    #elif name=="gen_dyn":    
+    #    return Gen_Dyn(CLI_NAME) 
+    #elif name=="gen_chi":
+    #    return Gen_Chi(CLI_NAME)
+    #elif name=="gen_dyn_chi":
+    #    return Gen_Dyn_Chi(CLI_NAME)
+    #elif name=="gen_switch":
+    #    return Gen_Switch(CLI_NAME)
+    #elif name=="evo_dyn":
+    #    return Evolve_Dyn(CLI_NAME)
+    #elif name=="evo_init":
+    #    return Evolve_Init(CLI_NAME)
+    #elif name=="compare_dyn":
+    #    return Compare_Dyn(CLI_NAME)
     
     return None
 
